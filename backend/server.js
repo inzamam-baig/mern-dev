@@ -1,12 +1,18 @@
 // entry point to the server
 const express = require("express");
+const colors = require("colors");
 const dotenv = require("dotenv").config();
 // importing custom error handler
 const { errorHandler } = require("./middleware/errorMiddleware");
+
+// db connection configuration
+const connectDB = require("./config/db");
 const PORT = process.env.PORT;
 
 // init express server
 const app = express();
+// running the db connection
+connectDB();
 
 // middleware to accept incoming data
 app.use(express.json());

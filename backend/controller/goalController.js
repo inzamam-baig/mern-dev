@@ -1,12 +1,15 @@
 // use then and catch instead of try/catch
 const asyncHandler = require("express-async-handler");
+// model
+const Goal = require("../models/goalModel");
 
 // @desc Get User Specific Goals
 // @route GET /api/goals
 // @access private
 
 const getGoals = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get Goals" });
+  const goals = await Goal.find();
+  res.status(200).json(goals);
 });
 
 // @desc Set a User Specific Goal
@@ -19,7 +22,11 @@ const setGoal = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Please a text Field");
   }
-  res.status(200).json({ message: "Set Goals" });
+
+  const goal = await Goal.create({
+    goal: req.body.goal,
+  });
+  res.status(200).json({ message: goal });
 });
 
 // @desc Update a User Specific Goal
@@ -27,14 +34,31 @@ const setGoal = asyncHandler(async (req, res) => {
 // @access Private
 
 const updateGoal = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Updated Goal ${req.params.id}` });
+  const goal = await Goal.findById(req.params.id);
+  if (!goal) {
+    res.status(400);
+    throw new Error("Goal not found");
+  }
+
+  const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  res.status(200).json(updatedGoal);
 });
 
 // @desc Delete a User Specific Goal
 // @route DELETE /api/goals
 // @access Private
 const deleteGoal = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `Deleted Goal ${req.params.id}` });
+  const goal = await Goal.findById(req.params.id);
+  if (!goal) {
+    res.status(400);
+    throw new Error("Goal not found");
+  }
+
+  const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
+
+  res.status(200).json({ id: `Deleted Goal ${req.params.id}` });
 });
 
 module.exports = {
