@@ -6,12 +6,12 @@ const goalSchema = mongoose.Schema(
     goal: {
       type: String,
       // unique: true
-      required: [true, "Text Value must contain some data"],
+      required: [true, "Goal Value must contain some data"],
     },
   },
   {
-    timestamp: true,
+    timestamps: true,
   }
 );
 
-module.exports = mongoose.model("Goals", goalSchema);
+module.exports = mongoose.model("Goal", goalSchema);

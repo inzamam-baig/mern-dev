@@ -1,5 +1,6 @@
 // entry point to the server
 const express = require("express");
+// config load .env content into process.env
 const colors = require("colors");
 const dotenv = require("dotenv").config();
 // importing custom error handler
@@ -7,6 +8,7 @@ const { errorHandler } = require("./middleware/errorMiddleware");
 
 // db connection configuration
 const connectDB = require("./config/db");
+// getting the port from environment
 const PORT = process.env.PORT;
 
 // init express server
@@ -21,7 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 /******************************** 
 routes
 ****************************/
-// if route reaches the end point it will redirect to the goalRoutes under routes
+// if route reaches the end point it will redirect to the goalRoutes under directory routes
 app.use("/api/goals", require("./routes/goalRoutes"));
 
 // custom error handler which will override the default error handler

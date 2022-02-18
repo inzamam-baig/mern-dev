@@ -17,12 +17,12 @@ const getGoals = asyncHandler(async (req, res) => {
 // @access Private
 
 const setGoal = asyncHandler(async (req, res) => {
+  // checking if goal is sent in request
   if (!req.body.goal) {
     // return res.status(400).json({ message: "Empty Field, Please add a goal" });
     res.status(400);
     throw new Error("Please a text Field");
   }
-
   const goal = await Goal.create({
     goal: req.body.goal,
   });
@@ -39,7 +39,6 @@ const updateGoal = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Goal not found");
   }
-
   const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
@@ -56,8 +55,8 @@ const deleteGoal = asyncHandler(async (req, res) => {
     throw new Error("Goal not found");
   }
 
-  const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
-
+  // const deletedGoal = await Goal.findByIdAndDelete(req.params.id);
+  await goal.remove();
   res.status(200).json({ id: `Deleted Goal ${req.params.id}` });
 });
 
